@@ -39,7 +39,7 @@ app.get('/api/notes/:id', (request, response) => {
     .catch(error => {
       console.log(error)
       response.status(400).send({ error: 'malformatted id' })
-  })
+    })
 })
 
 app.post('/api/notes', (request, response, next) => {
@@ -53,13 +53,13 @@ app.post('/api/notes', (request, response, next) => {
 
   note.save()
     .then(savedNote => {
-    response.json(savedNote)
+      response.json(savedNote)
     })
     .catch(error => next(error))
 })
 
 app.put('/api/notes/:id', (request, response, next) => {
-  const { content, important} = request.body
+  const { content, important } = request.body
 
   Note.findByIdAndUpdate(
     request.params.id,
@@ -72,9 +72,9 @@ app.put('/api/notes/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-app.delete('/api/notes/:id', (request, response) => {
+app.delete('/api/notes/:id', (request, response, next) => {
   Note.findByIdAndRemove(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
